@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Sugestões Salvas - Analisador Lotofácil{% endblock %}
+
+{% block content %}
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+    .badge {
+        font-size: 0.9em;
+    }
+</style>
+
+<h1 class="mb-4"><i class="bi bi-archive-fill"></i> Sugestões de Jogos Salvas</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        {% if sugestoes %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Concurso</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Números Sugeridos</th>
+                            <th scope="col">Acertos</th>
+                            <th scope="col">Resultado Oficial</th>
+                            <th scope="col" class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in sugestoes %}
+                            <tr>
+                                <td><strong>{{ s.concurso }}</strong></td>
+                                <td>{{ s.tipo_sugestao }}</td>
+                                <td style="font-size: 0.9em; word-wrap: break-word;">{{ s.numeros_sugeridos|join(', ') }}</td>
+                                <td class="text-center">
+                                    {% if s.acertos is not none %}
+                                        <span class="badge {% if s.acertos >= 11 %}bg-success{% else %}bg-warning text-dark{% endif %}">{{ s.acertos }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">Pendente</span>
+                                    {% endif %}
+                                </td>
+                                <td style="font-size: 0.9em; word-wrap: break-word;">
+                                    {% if s.resultado_concurso %}
+                                        {{ s.resultado_concurso|join(', ') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if s.acertos is none %}
+                                        <form action="{{ url_for('delete_sugestao', sugestao_id=s.id) }}" method="post" onsubmit="return confirm('Tem certeza que deseja excluir esta sugestão?');">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm" title="Excluir Sugestão">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                Nenhuma sugestão foi salva ainda. Gere novas sugestões na página inicial.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

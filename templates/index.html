@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Página Inicial - Analisador Lotofácil{% endblock %}
+
+{% block content %}
+<style>
+    .dezena-badge {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #212529;
+        font-weight: bold;
+        margin: 2px;
+        font-size: 1.1em;
+    }
+    .card-title .bi {
+        margin-right: 10px;
+    }
+</style>
+
+<h1 class="mb-4">Página Inicial</h1>
+
+<!-- Card do Último Resultado -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="card-title mb-0"><i class="bi bi-trophy-fill"></i>Último Resultado</h5>
+    </div>
+    <div class="card-body text-center">
+        {% if ultimo_concurso %}
+            <h6 class="card-subtitle mb-2 text-muted">Concurso N.º <strong>{{ ultimo_concurso.concurso }}</strong></h6>
+            <div class="mt-3">
+                {% for dezena in ultimo_concurso.dezenas %}
+                    <span class="dezena-badge">{{ dezena }}</span>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                O banco de dados está vazio. Vá em "Atualizar Banco" no menu para começar.
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <!-- Card para Gerar Sugestões -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="bi bi-lightbulb-fill"></i>Gerar Novos Jogos</h5>
+            </div>
+            <div class="card-body">
+                <p>Crie sugestões de jogos com base em diferentes estratégias.</p>
+                <a href="{{ url_for('freq_suggestion') }}" class="btn btn-info w-100 mb-2">
+                    <i class="bi bi-card-list"></i> Sugestão por Frequência
+                </a>
+                <a href="{{ url_for('ml_suggestion') }}" class="btn btn-success w-100">
+                    <i class="bi bi-cpu-fill"></i> Sugestão com Machine Learning
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card para Análise e Ferramentas -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h5 class="card-title mb-0"><i class="bi bi-tools"></i>Análise e Ferramentas</h5>
+            </div>
+            <div class="card-body">
+                <p>Visualize sugestões salvas e avalie a performance dos modelos.</p>
+                <a href="{{ url_for('sugestoes_salvas') }}" class="btn btn-secondary w-100 mb-2">
+                    <i class="bi bi-archive-fill"></i> Ver Sugestões Salvas
+                </a>
+                <a href="{{ url_for('run_backtest') }}" class="btn btn-danger w-100">
+                    <i class="bi bi-graph-up-arrow"></i> Executar Backtest de ML
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

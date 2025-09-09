@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Executar Backtest - Analisador Lotofácil{% endblock %}
+
+{% block content %}
+<h1 class="mb-4"><i class="bi bi-graph-up-arrow"></i> Executar Backtest de ML</h1>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="card-text">O backtest avalia a performance do modelo de Machine Learning em concursos passados.</p>
+        <p class="card-text">Insira o número de concursos mais recentes que você deseja usar para o backtest:</p>
+        
+        <form action="{{ url_for('run_backtest') }}" method="post">
+            <div class="mb-3">
+                <label for="periodo_testes" class="form-label">Número de Concursos:</label>
+                <input type="number" class="form-control" id="periodo_testes" name="periodo_testes" min="1" required>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-play-fill"></i> Executar Backtest
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
