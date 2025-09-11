@@ -8,19 +8,7 @@ def conectar_db():
     conn = sqlite3.connect(DB_FILE)
     return conn
 
-def criar_tabela():
-    """Cria a tabela de resultados se ela não existir."""
-    conn = conectar_db()
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS resultados (
-            concurso INTEGER PRIMARY KEY,
-            dezenas TEXT NOT NULL
-        );
-    """)
-    conn.commit()
-    conn.close()
-    print("Banco de dados e tabela verificados com sucesso.")
+
 
 def inserir_resultado(concurso, dezenas):
     """Insere um resultado de concurso no banco de dados."""
@@ -94,9 +82,9 @@ def criar_tabela_sugestoes_salvas():
     cursor = conn.cursor()
     # Para desenvolvimento, dropar a tabela para garantir que o novo schema seja aplicado.
     # CUIDADO: Isso apaga todos os dados da tabela.
-    cursor.execute("DROP TABLE IF EXISTS sugestoes_salvas;")
+    # cursor.execute("DROP TABLE IF EXISTS sugestoes_salvas;")
     cursor.execute("""
-        CREATE TABLE sugestoes_salvas (
+        CREATE TABLE IF NOT EXISTS sugestoes_salvas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER NOT NULL,
             concurso INTEGER NOT NULL,
