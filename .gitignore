@@ -48,4 +48,4 @@ Thumbs.db
 *.log
 
 # Modelos treinados (opcional - pode ser incluído se necessário)
-# trained_models/
+trained_models/
